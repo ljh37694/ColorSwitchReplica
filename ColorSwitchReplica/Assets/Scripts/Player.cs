@@ -23,11 +23,13 @@ public class Player : MonoBehaviour
     }
 
 	void OnTriggerEnter2D(Collider2D col) {
-		Debug.Log(col.tag);
+		if (currentColor != col.tag) {
+			Debug.Log("Game Over!");
+		}
 	}
 
 	void SetRandomColor() {
-		int idx = Random.Range(0, 3);
+		int idx = Random.Range(0, 4);
 
 		currentColor = colorNames[idx];
 		sr.color = colors[idx];
