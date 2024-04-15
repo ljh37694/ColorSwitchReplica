@@ -1,3 +1,4 @@
+using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
@@ -8,6 +9,7 @@ public class Player : MonoBehaviour
 
 	public Rigidbody2D rb;
 	public SpriteRenderer sr;
+	public Collider2D playerCol;
 
 	private string currentColor;
 	public Color[] colors = new Color[4];
@@ -30,15 +32,23 @@ public class Player : MonoBehaviour
 			Destroy(col.gameObject);
 		}
 
-		else if (currentColor != col.tag) {
+		else if (col.tag ==  "Ground") {
+			playerCol.isTrigger = false;
+		}
+
+		else if (Array.Exists(colorNames, x => x == col.tag) && currentColor != col.tag) {
 			Debug.Log("Game Over!");
 
 			SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
 		}
 	}
 
+	private void OnCollisionExit2D(Collision2D collision) {
+		playerCol.isTrigger = true;
+	}
+
 	void SetRandomColor() {
-		int idx = Random.Range(0, 4);
+		int idx = UnityEngine.Random.Range(0, 4);
 
 		currentColor = colorNames[idx];
 		sr.color = colors[idx];
